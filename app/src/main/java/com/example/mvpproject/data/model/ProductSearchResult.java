@@ -1,4 +1,4 @@
-package com.example.mvpproject.model;
+package com.example.mvpproject.data.model;
 
 import java.util.List;
 
