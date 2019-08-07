@@ -13,10 +13,17 @@ public class ProductsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.products_activity);
 
+        if (null == savedInstanceState) {
+            initFragment(ProductsFragment.newInstance());
+        }
+    }
+
+    private void initFragment(ProductsFragment productsFragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.content, ProductsFragment.newInstance());
+        transaction.add(R.id.content, productsFragment);
         transaction.commit();
     }
 }
