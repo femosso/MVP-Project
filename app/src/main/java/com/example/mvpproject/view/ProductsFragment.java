@@ -21,6 +21,7 @@ import com.example.mvpproject.data.RetrofitServiceImpl;
 import com.example.mvpproject.data.model.Product;
 import com.example.mvpproject.presenter.ProductsContract;
 import com.example.mvpproject.presenter.ProductsPresenter;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class ProductsFragment extends Fragment implements ProductsContract.View 
 
         int numColumns = 1;
 
-        RecyclerView recyclerView = root.findViewById(R.id.filmes_list);
+        RecyclerView recyclerView = root.findViewById(R.id.products_list);
         recyclerView.setAdapter(mListAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), numColumns));
@@ -119,6 +120,13 @@ public class ProductsFragment extends Fragment implements ProductsContract.View 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             Product product = mList.get(position);
+
+            Picasso.with(holder.productThumbnail.getContext())
+                    .load(product.imageUrl)
+                    .fit().centerCrop()
+                    .placeholder(R.drawable.ic_insert_photo_black_48px)
+                    .into(holder.productThumbnail);
+
             holder.productTitle.setText(product.name);
         }
 

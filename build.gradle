@@ -33,4 +33,5 @@ ext {
     buildToolsVersion = '29.0.1'
 
     retrofitVersion = '2.0.2'
+    picassoVersion = '2.5.2'
 }
