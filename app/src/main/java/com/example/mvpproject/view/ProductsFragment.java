@@ -77,6 +77,17 @@ public class ProductsFragment extends Fragment implements ProductsContract.View 
         mListAdapter.updateData(productList);
     }
 
+    @Override
+    public void setLoading(final boolean active) {
+        final SwipeRefreshLayout srl = getView().findViewById(R.id.refresh_layout);
+        srl.post(new Runnable() {
+            @Override
+            public void run() {
+                srl.setRefreshing(active);
+            }
+        });
+    }
+
     ProductListener mProductListener = new ProductListener() {
         @Override
         public void onProductClick(Product productClicked) {
@@ -138,8 +149,8 @@ public class ProductsFragment extends Fragment implements ProductsContract.View 
             public ViewHolder(View itemView, ProductListener productListener) {
                 super(itemView);
 
-                productThumbnail = itemView.findViewById(R.id.product_title);
-                productTitle = itemView.findViewById(R.id.product_thumbnail);
+                productTitle = itemView.findViewById(R.id.product_title);
+                productThumbnail = itemView.findViewById(R.id.product_thumbnail);
 
                 mProductListener = productListener;
             }

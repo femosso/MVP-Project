@@ -8,6 +8,7 @@ public interface ProductsContract {
 
     interface View {
         void showProducts(List<Product> productList);
+        void setLoading(boolean active);
     }
 
     interface Actions {
