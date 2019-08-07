@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.mvpproject.R;
+import com.example.mvpproject.data.RetrofitServiceImpl;
 import com.example.mvpproject.data.model.Product;
 import com.example.mvpproject.presenter.ProductsContract;
 import com.example.mvpproject.presenter.ProductsPresenter;
@@ -36,7 +37,7 @@ public class ProductsFragment extends Fragment implements ProductsContract.View 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mActionsListener = new ProductsPresenter(this);
+        mActionsListener = new ProductsPresenter(this, new RetrofitServiceImpl());
         mListAdapter = new ProductsAdapter(new ArrayList<Product>(0), mProductListener);
     }
 

@@ -1,29 +1,28 @@
 package com.example.mvpproject.presenter;
 
-import com.example.mvpproject.data.model.Product;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.mvpproject.data.FetchDataService;
+import com.example.mvpproject.data.model.ProductSearchResult;
 
 public class ProductsPresenter implements ProductsContract.Actions {
 
-    public ProductsContract.View mProductsView;
+    private ProductsContract.View mProductsView;
+    private FetchDataService mFetchDataService;
 
-    public ProductsPresenter(ProductsContract.View productsView) {
+    public ProductsPresenter(ProductsContract.View productsView, FetchDataService fetchDataService) {
         mProductsView = productsView;
+        mFetchDataService = fetchDataService;
     }
 
     @Override
     public void loadProducts() {
         mProductsView.setLoading(true);
-        Product product = new Product();
-        product.name = "skol";
-
-        List<Product> productList = new ArrayList<>();
-        productList.add(product);
-
-        mProductsView.showProducts(productList);
-        mProductsView.setLoading(false);
+        mFetchDataService.getProducts(new FetchDataService.FetchDataCallback<ProductSearchResult>() {
+            @Override
+            public void onLoaded(ProductSearchResult data) {
+                mProductsView.setLoading(false);
+                mProductsView.showProducts(data.products);
+            }
+        });
     }
 
     @Override

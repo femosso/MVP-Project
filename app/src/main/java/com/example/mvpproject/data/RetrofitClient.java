@@ -7,7 +7,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    public static final String URL = "";
+    public static final String URL = "https://raw.githubusercontent.com/";
 
     private static Retrofit retrofit = null;
     private static Gson gson = new GsonBuilder().create();
