@@ -1,6 +1,7 @@
 package com.example.mvpproject.presenter;
 
 import com.example.mvpproject.data.FetchDataService;
+import com.example.mvpproject.data.model.Product;
 import com.example.mvpproject.data.model.ProductSearchResult;
 
 public class ProductsPresenter implements ProductsContract.Actions {
@@ -26,7 +27,7 @@ public class ProductsPresenter implements ProductsContract.Actions {
     }
 
     @Override
-    public void openProduct() {
-
+    public void openProduct(Product product) {
+        mProductsView.showProduct(product);
     }
 }

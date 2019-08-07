@@ -9,10 +9,11 @@ public interface ProductsContract {
     interface View {
         void showProducts(List<Product> productList);
         void setLoading(boolean active);
+        void showProduct(Product product);
     }
 
     interface Actions {
         void loadProducts();
-        void openProduct();
+        void openProduct(Product product);
     }
 }

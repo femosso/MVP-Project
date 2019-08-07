@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -90,10 +91,15 @@ public class ProductsFragment extends Fragment implements ProductsContract.View 
         });
     }
 
+    @Override
+    public void showProduct(Product product) {
+        Toast.makeText(getContext(), "Show product: " + product.name, Toast.LENGTH_LONG).show();
+    }
+
     ProductListener mProductListener = new ProductListener() {
         @Override
         public void onProductClick(Product productClicked) {
-            mActionsListener.openProduct();
+            mActionsListener.openProduct(productClicked);
         }
     };
 
@@ -158,10 +164,12 @@ public class ProductsFragment extends Fragment implements ProductsContract.View 
             public ViewHolder(View itemView, ProductListener productListener) {
                 super(itemView);
 
+                mProductListener = productListener;
+
                 productTitle = itemView.findViewById(R.id.product_title);
                 productThumbnail = itemView.findViewById(R.id.product_thumbnail);
 
-                mProductListener = productListener;
+                itemView.setOnClickListener(this);
             }
 
             @Override
