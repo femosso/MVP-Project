@@ -1,5 +1,6 @@
 package com.example.mvpproject.view;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,7 +37,7 @@ public class ProductsFragment extends Fragment implements ProductsContract.View 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActionsListener = new ProductsPresenter(this);
-        mListAdapter = new ProductsAdapter(new ArrayList<Product>(0));
+        mListAdapter = new ProductsAdapter(new ArrayList<Product>(0), mProductListener);
     }
 
     @Override
@@ -49,49 +51,108 @@ public class ProductsFragment extends Fragment implements ProductsContract.View 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), numColumns));
 
+        SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.refresh_layout);
+        swipeRefreshLayout.setColorSchemeColors(
+                ContextCompat.getColor(getActivity(), R.color.colorPrimary),
+                ContextCompat.getColor(getActivity(), R.color.colorAccent),
+                ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mActionsListener.loadProducts();
+            }
+        });
+
         return root;
     }
 
-    private static class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHolder> {
+    @Override
+    public void onResume() {
+        super.onResume();
+        mActionsListener.loadProducts();
+    }
+
+    @Override
+    public void showProducts(List<Product> productList) {
+        mListAdapter.updateData(productList);
+    }
+
+    ProductListener mProductListener = new ProductListener() {
+        @Override
+        public void onProductClick(Product productClicked) {
+            mActionsListener.openProduct();
+        }
+    };
+
+    public static class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHolder> {
 
         private List<Product> mList;
+        private ProductListener mProductListener;
 
-        public ProductsAdapter(List<Product> products) {
+        public ProductsAdapter(List<Product> products, ProductListener productListener) {
             mList = products;
+            mProductListener = productListener;
         }
 
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return null;
+            Context context = parent.getContext();
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View noteView = inflater.inflate(R.layout.product_item, parent, false);
+
+            return new ViewHolder(noteView, mProductListener);
         }
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+            Product product = mList.get(position);
+            holder.productTitle.setText(product.name);
         }
 
         @Override
         public int getItemCount() {
-            return 0;
+            return mList.size();
+        }
+
+        public Product getItem(int position) {
+            return mList.get(position);
+        }
+
+        public void updateData(List<Product> products) {
+            setList(products);
+            notifyDataSetChanged();
+        }
+
+        private void setList(List<Product> products) {
+            mList = products;
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-            public ImageView productThumbnail;
-            public TextView productTitle;
+            private ImageView productThumbnail;
+            private TextView productTitle;
 
-            public ViewHolder(View itemView) {
+            private ProductListener mProductListener;
+
+            public ViewHolder(View itemView, ProductListener productListener) {
                 super(itemView);
+
                 productThumbnail = itemView.findViewById(R.id.product_title);
                 productTitle = itemView.findViewById(R.id.product_thumbnail);
+
+                mProductListener = productListener;
             }
 
             @Override
             public void onClick(View view) {
-                SwipeRefreshLayout swipeRefreshLayout;
-
+                int position = getAdapterPosition();
+                mProductListener.onProductClick(getItem(position));
             }
         }
+    }
+
+    public interface ProductListener {
+        void onProductClick(Product productClicked);
     }
 }

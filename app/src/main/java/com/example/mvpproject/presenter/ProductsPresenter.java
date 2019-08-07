@@ -7,4 +7,14 @@ public class ProductsPresenter implements ProductsContract.Actions {
     public ProductsPresenter(ProductsContract.View productsView) {
         mProductsView = productsView;
     }
+
+    @Override
+    public void loadProducts() {
+
+    }
+
+    @Override
+    public void openProduct() {
+
+    }
 }
