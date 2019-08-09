@@ -16,8 +16,8 @@ public class RetrofitServiceImpl implements FetchDataService {
 
     @Override
     public void getProducts(final FetchDataCallback<ProductSearchResult> callback) {
-        Call<ProductSearchResult> callFilme = mRetrofitEndpoint.query();
-        callFilme.enqueue(new Callback<ProductSearchResult>() {
+        Call<ProductSearchResult> callProduct = mRetrofitEndpoint.query();
+        callProduct.enqueue(new Callback<ProductSearchResult>() {
             @Override
             public void onResponse(Call<ProductSearchResult> call, Response<ProductSearchResult> response) {
                 if (response.code() == 200) {
