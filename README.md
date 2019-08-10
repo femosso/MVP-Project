@@ -2,7 +2,7 @@
 
 Self-study repository to understand MVP architecture in Android applications.
 
-![alt text](https://raw.githubusercontent.com/femosso/MVP-Project/master/MVP.png)
+![alt text](https://raw.githubusercontent.com/femosso/MVP-Project/master/MVP.jpg)
 
 **Model:** manipulates all the logic related to the data of the application. The content is downloaded from an own-created dataset hosted in: https://raw.githubusercontent.com/femosso/products-dataset/master/data.txt. The data is downloaded with Retrofit library and inflated in the View through the Presenter layer.
 
